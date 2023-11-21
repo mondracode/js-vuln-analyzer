@@ -1,0 +1,2 @@
+eval(req.attribute)
+const aBoolean = "123" == 123
