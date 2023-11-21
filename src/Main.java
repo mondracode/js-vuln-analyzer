@@ -24,7 +24,7 @@ public class Main {
         JavaScriptParser parser = new JavaScriptParser(tokens);
 
         ParseTree tree = parser.program(); // comienza el análisis en la regla inicial
-        //System.out.println(tree.toStringTree(parser)); // imprime el árbol en forma textual
+        System.out.println(tree.toStringTree(parser)); // imprime el árbol en forma textual
 
         JavascriptVulnDetector listener = new JavascriptVulnDetector();
 

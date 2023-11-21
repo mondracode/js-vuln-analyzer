@@ -1,2 +1,7 @@
+// Eval call
 eval(req.attribute)
-const aBoolean = "123" == 123
+eval('setTimeout(9999999)')
+
+if (2 + 2 == 4) {
+    console.log("hmmm")
+}

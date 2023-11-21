@@ -18,4 +18,15 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
         }
     }
 
+    @Override
+    public void enterEqualityExpression(JavaScriptParser.EqualityExpressionContext ctx) {
+        String input = ctx.getText();
+
+        if(ctx.Equals_().getText().equals("==") || ctx.Equals_().getText().equals("!=")) {
+            System.out.println(input);
+            System.out.println("^^^^");
+            System.out.println("This input has loose comparisons. These may behave incorrectly because of type coercion and can be used maliciously.");
+        }
+    }
+
 }
