@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
     String evalRegex = "\\beval\\([^)]*\\)";
     String weakRNGRegex = "\\S+\\s*=\\s*Math\\.random\\(\\)";
-    String exposedCredentialsRegex = "var\\s*(username|password)\\s*=\\s*(\"[^\"]*\"|'[^']*')";
+    String exposedCredentialsRegex = "(var|const)\\s*(username|password)\\s*=\\s*(\"[^\"]*\"|'[^']*')";
     Boolean hasPrototypePollution = false;
 
     @Override
