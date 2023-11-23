@@ -3,6 +3,7 @@ import java.util.regex.Pattern;
 
 public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
     String evalRegex = "\\beval\\([^)]*\\)";
+    Boolean hasPrototypePollution = false;
 
     @Override
     public void enterExpressionStatement(JavaScriptParser.ExpressionStatementContext ctx) {
@@ -26,6 +27,25 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
             System.out.println(input);
             System.out.println("^^^^");
             System.out.println("This input has loose comparisons. These may behave incorrectly because of type coercion and can be used maliciously.");
+        }
+    }
+
+    @Override
+    public void enterPropertyName(JavaScriptParser.PropertyNameContext ctx) {
+        String input = ctx.getText();
+
+        if(ctx.getText().equals("\"__proto__\"")){
+            hasPrototypePollution = true;
+        }
+    }
+
+    @Override
+    public void exitPropertyExpressionAssignment(JavaScriptParser.PropertyExpressionAssignmentContext ctx) {
+        String input = ctx.getText();
+
+        if(hasPrototypePollution && input.contains("\"__proto__\"")){
+            System.out.println(input);
+            System.out.println("^^^^");
         }
     }
 

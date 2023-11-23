@@ -2,6 +2,12 @@
 eval(req.attribute)
 eval('setTimeout(9999999)')
 
-if (2 + 2 == 4) {
+if (null == undefined) {
     console.log("hmmm")
+}
+
+const protoPollution = {
+    "__proto__": {
+        "toString": "broken parameter"
+    }
 }
