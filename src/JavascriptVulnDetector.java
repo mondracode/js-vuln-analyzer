@@ -23,7 +23,7 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
     public void enterEqualityExpression(JavaScriptParser.EqualityExpressionContext ctx) {
         String input = ctx.getText();
 
-        if(ctx.Equals_().getText().equals("==") || ctx.Equals_().getText().equals("!=")) {
+        if (ctx.Equals_().getText().equals("==") || ctx.Equals_().getText().equals("!=")) {
             System.out.println(input);
             System.out.println("^^^^");
             System.out.println("This input has loose comparisons. These may behave incorrectly because of type coercion and can be used maliciously.");
@@ -34,7 +34,7 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
     public void enterPropertyName(JavaScriptParser.PropertyNameContext ctx) {
         String input = ctx.getText();
 
-        if(ctx.getText().equals("\"__proto__\"")){
+        if (ctx.getText().equals("\"__proto__\"")) {
             hasPrototypePollution = true;
         }
     }
@@ -43,9 +43,10 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
     public void exitPropertyExpressionAssignment(JavaScriptParser.PropertyExpressionAssignmentContext ctx) {
         String input = ctx.getText();
 
-        if(hasPrototypePollution && input.contains("\"__proto__\"")){
+        if (hasPrototypePollution && input.contains("\"__proto__\"")) {
             System.out.println(input);
             System.out.println("^^^^");
+            System.out.println("This input contains prototype pollution. This can interfere with expected behavior of standard functions so not using it is advised");
         }
     }
 
