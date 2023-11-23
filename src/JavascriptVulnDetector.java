@@ -3,6 +3,8 @@ import java.util.regex.Pattern;
 
 public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
     String evalRegex = "\\beval\\([^)]*\\)";
+    String weakRNGRegex = "\\S+\\s*=\\s*Math\\.random\\(\\)";
+    String exposedCredentialsRegex = "var\\s*(username|password)\\s*=\\s*(\"[^\"]*\"|'[^']*')";
     Boolean hasPrototypePollution = false;
 
     @Override
@@ -50,4 +52,26 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
         }
     }
 
+    @Override
+    public void enterVariableStatement(JavaScriptParser.VariableStatementContext ctx) {
+        String input = ctx.getText();
+
+        Pattern pattern = Pattern.compile(weakRNGRegex);
+        Matcher matcher = pattern.matcher(input);
+
+        if (matcher.find()) {
+            System.out.println(matcher.group(0));
+            System.out.println("^^^^");
+            System.out.println("This is a weak random number generation. It is highly discouraged to use Math.random() for any critical purpose");
+        }
+
+        pattern = Pattern.compile(exposedCredentialsRegex);
+        matcher = pattern.matcher(input);
+
+        if (matcher.find()) {
+            System.out.println(matcher.group(0));
+            System.out.println("^^^^");
+            System.out.println("It is a bad practice to declare literal credentials on source code, since they could be accessed by malicious agents.");
+        }
+    }
 }

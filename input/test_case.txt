@@ -11,3 +11,9 @@ const protoPollution = {
         "toString": "broken parameter"
     }
 }
+
+window.location.href = redirectUrl;
+
+var weakRandomNumber = Math.random();
+var username = "admin";
+var password = "password123";
