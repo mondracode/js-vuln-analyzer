@@ -6,6 +6,7 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
     String weakRNGRegex = "\\S+\\s*=\\s*Math\\.random\\(\\)";
     String exposedCredentialsRegex = "(let|var|const)\\s*(username|password|api_key|apiKey)\\s*=\\s*(\"[^\"]*\"|'[^']*')";
     Boolean hasPrototypePollution = false;
+    Boolean insideEndpoint = false;
 
     private String separateVarKeyword(String exp) {
         return exp.replaceFirst("^(const|var|let)", "$1 ");
@@ -24,6 +25,15 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
             System.out.println("The input contains an eval() call. These calls should be avoided as they allow for malicious code injection inside its parameters.");
             System.out.println("----------");
         }
+
+        if (input.startsWith("app.get")) {
+            insideEndpoint = true;
+        }
+    }
+
+    @Override
+    public void exitExpressionStatement(JavaScriptParser.ExpressionStatementContext ctx) {
+        insideEndpoint = false;
     }
 
     @Override
@@ -108,6 +118,20 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
             System.out.println("^^^^");
             System.out.println("This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.");
             System.out.println("----------");
+        }
+    }
+
+    @Override
+    public void enterWhileStatement(JavaScriptParser.WhileStatementContext ctx) {
+        if (insideEndpoint) {
+            String input = ctx.getText();
+
+            if (input.startsWith("while(true)")) {
+                System.out.println(input);
+                System.out.println("^^^^");
+                System.out.println("This may be vulnerable to DDoS attacks because it includes a 'while (true)' loop inside an endpoint definition without any break condition.");
+                System.out.println("----------");
+            }
         }
     }
 }
