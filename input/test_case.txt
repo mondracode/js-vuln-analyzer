@@ -6,6 +6,8 @@ eval('setTimeout(9999999)')
 
 if (null == undefined) {
     console.log("hmmm")
+} else if (null != undefined) {
+    console.log("That second condition is not necessary")
 }
 
 const protoPollution = {
@@ -17,5 +19,11 @@ const protoPollution = {
 window.location.href = redirectUrl;
 
 var weakRandomNumber = Math.random();
+
 var username = "admin";
 const password = "password123";
+
+let api_key = "sadasdasd";
+var apiKey = "use env variables"
+
+let password = env.some.secure.credential

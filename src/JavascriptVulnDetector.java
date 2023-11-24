@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
     String evalRegex = "\\beval\\([^)]*\\)";
     String weakRNGRegex = "\\S+\\s*=\\s*Math\\.random\\(\\)";
-    String exposedCredentialsRegex = "(let|var|const)\\s*(username|password)\\s*=\\s*(\"[^\"]*\"|'[^']*')";
+    String exposedCredentialsRegex = "(let|var|const)\\s*(username|password|api_key|apiKey)\\s*=\\s*(\"[^\"]*\"|'[^']*')";
     Boolean hasPrototypePollution = false;
 
     private String separateVarKeyword(String exp) {
@@ -30,7 +30,7 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
     public void enterEqualityExpression(JavaScriptParser.EqualityExpressionContext ctx) {
         String input = ctx.getText();
 
-        if (ctx.Equals_().getText().equals("==") || ctx.Equals_().getText().equals("!=")) {
+        if ((ctx.Equals_() != null && ctx.Equals_().getText().equals("==")) || (ctx.NotEquals() != null && ctx.NotEquals().getText().equals("!="))) {
             System.out.println(input);
             System.out.println("^^^^");
             System.out.println("This input has loose comparisons. These may behave incorrectly because of type coercion and can be used maliciously.");
