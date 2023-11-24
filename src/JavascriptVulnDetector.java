@@ -95,4 +95,19 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
             System.out.println("----------");
         }
     }
+
+    @Override
+    public void enterFunctionBody(JavaScriptParser.FunctionBodyContext ctx) {
+        String input = ctx.getText();
+
+        Pattern pattern = Pattern.compile("(\\$\\{.*?\\}|\\<.*?\\>|\\%3C.*?\\%3E|\\\".*?\\\"|\\'.*?\\'|\\`.*?\\`)");
+        Matcher matcher = pattern.matcher(input);
+
+        if (matcher.find()) {
+            System.out.println(input);
+            System.out.println("^^^^");
+            System.out.println("This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.");
+            System.out.println("----------");
+        }
+    }
 }

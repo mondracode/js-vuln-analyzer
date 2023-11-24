@@ -27,3 +27,8 @@ let api_key = "sadasdasd";
 var apiKey = "use env variables"
 
 let password = env.some.secure.credential
+
+app.get("/", (req, res) => {
+    const name = req.query.name;
+    res.send(`<h1>Hello, ${name}</h1>`);
+});
