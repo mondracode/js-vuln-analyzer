@@ -1,3 +1,5 @@
+app.use(cors());
+
 // Eval call
 eval(req.attribute)
 eval('setTimeout(9999999)')

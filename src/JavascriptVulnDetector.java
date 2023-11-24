@@ -74,4 +74,15 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
             System.out.println("It is a bad practice to declare literal credentials on source code, since they could be accessed by malicious agents.");
         }
     }
+
+    @Override
+    public void enterArgumentsExpression(JavaScriptParser.ArgumentsExpressionContext ctx) {
+        String input = ctx.getText();
+
+        if (input.equals("app.use(cors())")) {
+            System.out.println(input);
+            System.out.println("^^^^");
+            System.out.println("Using CORS protection without an explicit whitelist is discouraged");
+        }
+    }
 }
