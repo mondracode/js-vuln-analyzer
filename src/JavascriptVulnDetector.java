@@ -2,7 +2,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
-    String evalRegex = "\\beval\\([^)]*\\)";
     String weakRNGRegex = "\\S+\\s*=\\s*Math\\.random\\(\\)";
     String exposedCredentialsRegex = "(let|var|const)\\s*(username|password|api_key|apiKey)\\s*=\\s*(\"[^\"]*\"|'[^']*')";
     Boolean hasPrototypePollution = false;
@@ -16,13 +15,21 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
     public void enterExpressionStatement(JavaScriptParser.ExpressionStatementContext ctx) {
         String input = ctx.getText();
 
-        Pattern pattern = Pattern.compile(evalRegex);
-        Matcher matcher = pattern.matcher(input);
+        Pattern eval_pattern = Pattern.compile("\\beval\\([^)]*\\)");
+        Matcher eval_matcher = eval_pattern.matcher(input);
 
-        if (matcher.find()) {
+        Pattern tmt_pattern = Pattern.compile("\\bsetTimeout\\([^)]*\\)");
+        Matcher tmt_matcher = tmt_pattern.matcher(input);
+
+        if (eval_matcher.find()) {
             System.out.println(input);
             System.out.println("^^^^");
-            System.out.println("The input contains an eval() call. These calls should be avoided as they allow for malicious code injection inside its parameters.");
+            System.out.println("This may be vulnerable to arbitrary code execution attacks because it uses the eval() function with a string argument, which can execute user input as code.");
+            System.out.println("----------");
+        } else if (tmt_matcher.find()) {
+            System.out.println(input);
+            System.out.println("^^^^");
+            System.out.println("This may be vulnerable to arbitrary code execution attacks because it uses the setTimeout() function with a string argument, which can execute user input as code.");
             System.out.println("----------");
         }
 
@@ -110,10 +117,10 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
     public void enterFunctionBody(JavaScriptParser.FunctionBodyContext ctx) {
         String input = ctx.getText();
 
-        Pattern pattern = Pattern.compile("(\\$\\{.*?\\}|\\<.*?\\>|\\%3C.*?\\%3E|\\\".*?\\\"|\\'.*?\\'|\\`.*?\\`)");
-        Matcher matcher = pattern.matcher(input);
+        Pattern xss_pattern = Pattern.compile("(\\$\\{.*?\\}|\\<.*?\\>|\\%3C.*?\\%3E|\\\".*?\\\"|\\'.*?\\'|\\`.*?\\`)");
+        Matcher xss_matcher = xss_pattern.matcher(input);
 
-        if (matcher.find()) {
+        if (xss_matcher.find()) {
             System.out.println(input);
             System.out.println("^^^^");
             System.out.println("This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.");

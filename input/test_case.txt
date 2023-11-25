@@ -37,3 +37,6 @@ app.get("/home", (req, res) => {
   // Do a resource-intensive operation
   while(true) {}
 });
+
+var user_input = "console.log('This is user input.');";
+setTimeout(user_input, 1000);
