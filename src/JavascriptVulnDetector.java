@@ -29,17 +29,15 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
         Pattern tmt_pattern = Pattern.compile("\\bsetTimeout\\([^)]*\\)");
         Matcher tmt_matcher = tmt_pattern.matcher(input);
 
+        int lineNumber = ctx.getStart().getLine();
+
         if (eval_matcher.find()) {
-            System.out.println("<p>");
-            System.out.println("<code>" + input + "</code><br>");
-            System.out.println("<strong>This may be vulnerable to arbitrary code execution attacks because it uses the eval() function with a string argument, which can execute user input as code.</strong>");
-            System.out.println("</p>");
+            System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
+            System.out.println("<strong>This may be vulnerable to arbitrary code execution attacks because it uses the eval() function with a string argument, which can execute user input as code.</strong></p>");
             System.out.println("<hr>");
         } else if (tmt_matcher.find()) {
-            System.out.println("<p>");
-            System.out.println("<code>" + input + "</code><br>");
-            System.out.println("<strong>This may be vulnerable to arbitrary code execution attacks because it uses the setTimeout() function with a string argument, which can execute user input as code.</strong>");
-            System.out.println("</p>");
+            System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
+            System.out.println("<strong>This may be vulnerable to arbitrary code execution attacks because it uses the setTimeout() function with a string argument, which can execute user input as code.</strong></p>");
             System.out.println("<hr>");
         }
 
@@ -59,10 +57,9 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
         input = escapeHTMLTags(input);
 
         if ((ctx.Equals_() != null && ctx.Equals_().getText().equals("==")) || (ctx.NotEquals() != null && ctx.NotEquals().getText().equals("!="))) {
-            System.out.println("<p>");
-            System.out.println("<code>" + input + "</code><br>");
-            System.out.println("<strong>This input has loose comparisons. These may behave incorrectly because of type coercion and can be used maliciously.</strong>");
-            System.out.println("</p>");
+            int lineNumber = ctx.getStart().getLine();
+            System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
+            System.out.println("<strong>This input has loose comparisons. These may behave incorrectly because of type coercion and can be used maliciously.</strong></p>");
             System.out.println("<hr>");
         }
     }
@@ -80,7 +77,8 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
         input = escapeHTMLTags(input);
 
         if (hasPrototypePollution && input.contains("\"__proto__\"")) {
-            System.out.println("<p><code>" + input + "</code><br>");
+            int lineNumber = ctx.getStart().getLine();
+            System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
             System.out.println("<strong>This input contains prototype pollution. This can interfere with expected behavior of standard functions so not using it is advised</strong></p>");
             System.out.println("<hr>");
         }
@@ -95,7 +93,8 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
         Matcher matcher = pattern.matcher(input);
 
         if (matcher.find()) {
-            System.out.println("<p><code>" + matcher.group(0) + "</code><br>");
+            int lineNumber = ctx.getStart().getLine();
+            System.out.println("<p>Line " + lineNumber + ": <code>" + matcher.group(0) + "</code><br>");
             System.out.println("<strong>This is a weak random number generation. It is highly discouraged to use Math.random() for any critical purpose</strong></p>");
             System.out.println("<hr>");
         }
@@ -104,7 +103,8 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
         matcher = pattern.matcher(input);
 
         if (matcher.find()) {
-            System.out.println("<p><code>" + matcher.group(0) + "</code><br>");
+            int lineNumber = ctx.getStart().getLine();
+            System.out.println("<p>Line " + lineNumber + ": <code>" + matcher.group(0) + "</code><br>");
             System.out.println("<strong>It is a bad practice to declare literal credentials on source code, since they could be accessed by malicious agents.</strong></p>");
             System.out.println("<hr>");
         }
@@ -116,7 +116,8 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
         input = escapeHTMLTags(input);
 
         if (input.equals("app.use(cors())")) {
-            System.out.println("<p><code>" + input + "</code><br>");
+            int lineNumber = ctx.getStart().getLine();
+            System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
             System.out.println("<strong>Using CORS protection without an explicit whitelist is discouraged</strong></p>");
             System.out.println("<hr>");
         }
@@ -131,7 +132,8 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
         Matcher xss_matcher = xss_pattern.matcher(input);
 
         if (xss_matcher.find()) {
-            System.out.println("<p><code>" + input + "</code><br>");
+            int lineNumber = ctx.getStart().getLine();
+            System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
             System.out.println("<strong>This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.</strong></p>");
             System.out.println("<hr>");
         }
@@ -144,7 +146,8 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
             input = escapeHTMLTags(input);
 
             if (input.startsWith("while(true)")) {
-                System.out.println("<p><code>" + input + "</code><br>");
+                int lineNumber = ctx.getStart().getLine();
+                System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
                 System.out.println("<strong>This may be vulnerable to DDoS attacks because it includes a 'while (true)' loop inside an endpoint definition without any break condition.</strong></p>");
                 System.out.println("<hr>");
             }
