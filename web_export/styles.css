@@ -13,10 +13,20 @@ h1 {
 p {
     font-size: 14px;
     margin-bottom: 20px;
-    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.15);
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
+}
+
+.container {
+    font-size: 14px;
+    margin-bottom: 20px;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+
 }
 
 p code {
@@ -34,6 +44,8 @@ p strong {
 hr {
     border: none;
     height: 3px;
-    color: #333; /* old IE */
-    background-color: #333; /* Modern Browsers */
+    color: #333;
+    /* old IE */
+    background-color: #333;
+    /* Modern Browsers */
 }

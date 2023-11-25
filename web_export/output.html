@@ -1,0 +1,56 @@
+<html><head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+</head><body>
+<h1>Node.js vulnerability analyzer</h1>
+<hr>
+<p>Line 1: <code>app.use(cors())</code><br>
+<strong>Using CORS protection without an explicit whitelist is discouraged</strong></p>
+<hr>
+<p>Line 3: <code>eval(req.attribute)</code><br>
+<strong>This may be vulnerable to arbitrary code execution attacks because it uses the eval() function with a string argument, which can execute user input as code.</strong></p>
+<hr>
+<p>Line 5: <code>null==undefined</code><br>
+<strong>This input has loose comparisons. These may behave incorrectly because of type coercion and can be used maliciously.</strong></p>
+<hr>
+<p>Line 7: <code>null!=undefined</code><br>
+<strong>This input has loose comparisons. These may behave incorrectly because of type coercion and can be used maliciously.</strong></p>
+<hr>
+<p>Line 12: <code>"__proto__":{"toString":"broken parameter"}</code><br>
+<strong>This input contains prototype pollution. This can interfere with expected behavior of standard functions so not using it is advised</strong></p>
+<hr>
+<p>Line 19: <code>weakRandomNumber=Math.random()</code><br>
+<strong>This is a weak random number generation. It is highly discouraged to use Math.random() for any critical purpose</strong></p>
+<hr>
+<p>Line 21: <code>var username="admin"</code><br>
+<strong>It is a bad practice to declare literal credentials on source code, since they could be accessed by malicious agents.</strong></p>
+<hr>
+<p>Line 22: <code>let api_key="pass"</code><br>
+<strong>It is a bad practice to declare literal credentials on source code, since they could be accessed by malicious agents.</strong></p>
+<hr>
+<p>Line 26: <code>{constname=req.query.name;res.send(`&lt;h1&gt;Hello, ${name}&lt;/h1&gt;`);}</code><br>
+<strong>This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.</strong></p>
+<hr>
+<p>Line 33: <code>while(true){}</code><br>
+<strong>This may be vulnerable to DDoS attacks because it includes a 'while (true)' loop inside an endpoint definition without any break condition.</strong></p>
+<hr>
+<p>Line 37: <code>setTimeout(user_input,1000);</code><br>
+<strong>This may be vulnerable to arbitrary code execution attacks because it uses the setTimeout() function with a string argument, which can execute user input as code.</strong></p>
+<hr>
+<h1>Security Audit Results</h1>
+<hr>
+<div class='container'><h3>Vulnerabilities</h3>
+<ul>
+<li>Info: 0</li>
+<li>Low: 0</li>
+<li>Moderate: 0</li>
+<li>High: 0</li>
+<li>Critical: 0</li>
+</ul></div>
+<hr>
+<div class='container'><h3>Advisories</h3>
+<ul>
+</ul></div>
+<hr>
+<div class='container'><h3>Actions</h3>
+<ul>
+</body></html>
