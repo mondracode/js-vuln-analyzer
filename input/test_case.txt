@@ -1,8 +1,6 @@
 app.use(cors());
 
-// Eval call
 eval(req.attribute)
-eval('setTimeout(9999999)')
 
 if (null == undefined) {
     console.log("hmmm")
@@ -21,10 +19,7 @@ window.location.href = redirectUrl;
 var weakRandomNumber = Math.random();
 
 var username = "admin";
-const password = "password123";
-
-let api_key = "sadasdasd";
-var apiKey = "use env variables"
+let api_key = "pass";
 
 let password = env.some.secure.credential
 

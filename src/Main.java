@@ -5,31 +5,52 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import java.io.IOException;
 
+import java.io.*;
+import java.awt.Desktop;
+
 public class Main {
     public static void main(String[] args) throws IOException {
-        System.out.println("JS vuln analyzer");
-        System.out.println("----------------");
+        try {
+            File htmlFile = new File("web_export/output.html");
 
-        // crear un analizador léxico
-        JavaScriptLexer lexer;
-        if (args.length==0)
-            lexer = new JavaScriptLexer(CharStreams.fromFileName("input/test_case.txt"));
-        else
-            lexer = new JavaScriptLexer(CharStreams.fromFileName(args[0]));
+            PrintStream out = new PrintStream(new FileOutputStream(htmlFile));
 
-        // Identificar al analizador léxico como fuente de tokens para el sintactico
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
+            PrintStream console = System.out;
 
-        // Crear el analizador sintáctico que se alimenta a partir del buffer de tokens
-        JavaScriptParser parser = new JavaScriptParser(tokens);
+            System.setOut(out);
 
-        ParseTree tree = parser.program(); // comienza el análisis en la regla inicial
-        System.out.println(tree.toStringTree(parser)); // imprime el árbol en forma textual
+            System.out.println("<html><head>");
+            System.out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\">");
+            System.out.println("</head><body>");
+            System.out.println("<h1>Node.js vulnerability analyzer</h1>");
+            System.out.println("<hr>");
 
-        JavascriptVulnDetector listener = new JavascriptVulnDetector();
+            JavaScriptLexer lexer;
+            if (args.length == 0)
+                lexer = new JavaScriptLexer(CharStreams.fromFileName("input/test_case.txt"));
+            else
+                lexer = new JavaScriptLexer(CharStreams.fromFileName(args[0]));
 
-        ParseTreeWalker walker = new ParseTreeWalker();
-        walker.walk(listener, tree);
-        System.out.println();
+            CommonTokenStream tokens = new CommonTokenStream(lexer);
+
+            JavaScriptParser parser = new JavaScriptParser(tokens);
+
+            ParseTree tree = parser.program();
+
+            JavascriptVulnDetector listener = new JavascriptVulnDetector();
+
+            ParseTreeWalker walker = new ParseTreeWalker();
+            walker.walk(listener, tree);
+
+            System.out.println("</body></html>");
+
+            out.close();
+
+            System.setOut(console);
+
+            Desktop.getDesktop().browse(htmlFile.toURI());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
