@@ -3,7 +3,7 @@
 </head><body>
 <h1>Node.js vulnerability analyzer</h1>
 <hr>
-<h2>Analysis for file: input\src\api_root_3.js</h2>
+<h2>Analysis for file: \src\api_root_3.js</h2>
 <p>Line 1: <code>app.post('/evalEndpoint',(req,res)=&gt;{constuserCode=req.body.code;try{eval(userCode);res.send('Code executed successfully');}catch(error){res.status(500).send('Error executing code');}});</code><br>
 <strong>This may be vulnerable to arbitrary code execution attacks because it uses the eval() function with a string argument, which can execute user input as code.</strong></p>
 <hr>
@@ -20,7 +20,7 @@
 <strong>This input has loose comparisons. These may behave incorrectly because of type coercion and can be used maliciously.</strong></p>
 <hr>
 <hr>
-<h2>Analysis for file: input\src\input.js</h2>
+<h2>Analysis for file: \src\input.js</h2>
 <p>Line 1: <code>app.use(cors())</code><br>
 <strong>Using CORS protection without an explicit whitelist is discouraged</strong></p>
 <hr>
@@ -55,7 +55,7 @@
 <strong>This may be vulnerable to arbitrary code execution attacks because it uses the setTimeout() function with a string argument, which can execute user input as code.</strong></p>
 <hr>
 <hr>
-<h2>Analysis for file: input\src\input2.js</h2>
+<h2>Analysis for file: \src\input2.js</h2>
 <p>Line 1: <code>encryptedData=CryptoJS.DES.encrypt("data","key")</code><br>
 <strong>This may be vulnerable to weak encryption (DES). Consider using stronger encryption algorithms.</strong></p>
 <hr>
@@ -75,7 +75,7 @@
 <strong>This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.</strong></p>
 <hr>
 <hr>
-<h2>Analysis for file: input\src\routes\route.js</h2>
+<h2>Analysis for file: \src\routes\route.js</h2>
 <p>Line 1: <code>app.use(cors())</code><br>
 <strong>Using CORS protection without an explicit whitelist is discouraged</strong></p>
 <hr>

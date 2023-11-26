@@ -56,7 +56,7 @@ public class Main {
 
     private static void processJsFile(File jsFile) {
         System.out.println("<hr>");
-        System.out.println("<h2>Analysis for file: " + jsFile.getPath() + "</h2>");
+        System.out.println("<h2>Analysis for file: " + jsFile.getPath().substring(jsFile.getPath().indexOf("input/") + 6) + "</h2>");
 
         try {
             JavaScriptLexer lexer = new JavaScriptLexer(CharStreams.fromFileName(jsFile.getPath()));
