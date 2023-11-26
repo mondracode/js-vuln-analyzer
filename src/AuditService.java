@@ -63,7 +63,7 @@ public class AuditService {
     }
 
     private static void generateHtmlReport(JsonObject metadata, JsonObject advisories, JsonArray actions) {
-        System.out.println("<h1>Security Audit Results</h1>");
+        System.out.println("<h1>Package.json Audit Results</h1>");
         System.out.println("<hr>");
 
         System.out.println("<div class='container'><h3>Vulnerabilities</h3>");
