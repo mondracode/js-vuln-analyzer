@@ -20,6 +20,32 @@
 <strong>This input has loose comparisons. These may behave incorrectly because of type coercion and can be used maliciously.</strong></p>
 <hr>
 <hr>
+<h2>Analysis for file: \src\constants\common.constants.js</h2>
+<hr>
+<h2>Analysis for file: \src\controllers\auth.controller.js</h2>
+<p>Line 8: <code>{const{username,email,password}=req.body;try{constnewUser=newUser({username,email,password:awaitUser.encryptPassword(password)});constsavedUser=awaitnewUser.save();consttoken=jwt.sign({id:savedUser.id},config.SECRET,{expiresIn:EXPIRE_IN_MINUTES*MINUTE_ON_SECONDS})constnow=newDate();res.json({response:{token,expiresIn:now.valueOf()+(EXPIRE_IN_MINUTES*MINUTE_ON_MILISECONDS)},success:true});}catch(error){res.json({response:"Error creating user ("+error+")",success:false});}}</code><br>
+<strong>This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.</strong></p>
+<hr>
+<p>Line 40: <code>{const{email,password}=req.body;try{constuserFound=awaitUser.findOne({email});if(!userFound)returnres.json({response:"User not found",success:false});constmatchPassword=awaitUser.comparePassword(password,userFound.password);if(!matchPassword)returnres.json({response:"Invalid Password",success:false});consttoken=jwt.sign({id:userFound._id},config.SECRET,{expiresIn:EXPIRE_IN_MINUTES*MINUTE_ON_SECONDS});constnow=newDate();res.json({response:{token,expiresIn:now.valueOf()+(EXPIRE_IN_MINUTES*MINUTE_ON_MILISECONDS)},success:true,});}catch(error){res.json({response:"Error signin user ("+error+")",success:false});}}</code><br>
+<strong>This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.</strong></p>
+<hr>
+<hr>
+<h2>Analysis for file: \src\controllers\products.controller.js</h2>
+<p>Line 3: <code>{awaitaxios.get('https://dummyjson.com/products?limit=100').then((axios_res)=&gt;res.json({response:axios_res.data.products,success:true})).catch((error)=&gt;res.json({response:error.message,success:false}));}</code><br>
+<strong>This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.</strong></p>
+<hr>
+<p>Line 9: <code>{awaitaxios.get('https://dummyjson.com/products/'+req.params.productId).then((axios_res)=&gt;res.json({response:axios_res.data,success:true})).catch((error)=&gt;res.json({response:error.message,success:false}));}</code><br>
+<strong>This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.</strong></p>
+<hr>
+<hr>
+<h2>Analysis for file: \src\controllers\user.controller.js</h2>
+<p>Line 3: <code>{try{constusers=awaitUser.find();returnres.json({response:users,success:true});}catch(error){res.json({response:"Error getting users ("+error+")",success:false});}}</code><br>
+<strong>This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.</strong></p>
+<hr>
+<p>Line 12: <code>{try{res.json({response:req.userData,success:true});}catch(error){res.json({response:"Error getting user ("+error+")",success:false});}}</code><br>
+<strong>This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.</strong></p>
+<hr>
+<hr>
 <h2>Analysis for file: \src\input.js</h2>
 <p>Line 1: <code>app.use(cors())</code><br>
 <strong>Using CORS protection without an explicit whitelist is discouraged</strong></p>
@@ -74,6 +100,30 @@
 <p>Line 34: <code>{if(req.session.user){res.send('Welcome to the dashboard, '+req.session.user.username);}else{res.status(401).send('Unauthorized. Please log in.');}}</code><br>
 <strong>This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.</strong></p>
 <hr>
+<hr>
+<h2>Analysis for file: \src\libs\initialUsers.js</h2>
+<p>Line 3: <code>{try{constcount=awaitUser.estimatedDocumentCount();if(count&gt;0)return;constvalues=awaitPromise.all([newUser({username:'test',email:'test@test.viio',password:awaitUser.encryptPassword('test123')}).save()]);}catch(error){console.log(error);}}</code><br>
+<strong>This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.</strong></p>
+<hr>
+<hr>
+<h2>Analysis for file: \src\middlewares\authJwt.js</h2>
+<p>Line 5: <code>{try{consttoken=req.headers['x-access-token'];if(!token)returnres.json({response:'No token provided',success:false});constdecoded=jwt.verify(token,config.SECRET);constuser=awaitUser.findById(decoded.id,{password:0});if(!user)returnres.json({response:'no user token found',success:false});req.userData=user;}catch(error){returnres.status(500).json({response:'unauthorized',success:false});}next();}</code><br>
+<strong>This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.</strong></p>
+<hr>
+<hr>
+<h2>Analysis for file: \src\middlewares\index.js</h2>
+<hr>
+<h2>Analysis for file: \src\middlewares\verifySignup.js</h2>
+<p>Line 3: <code>{const{username}=req.body;constuser=awaitUser.findOne({username});if(user)returnres.json({response:'The user is already on use',success:false});next();}</code><br>
+<strong>This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.</strong></p>
+<hr>
+<p>Line 11: <code>{const{email}=req.body;constuser=awaitUser.findOne({email});if(user)returnres.json({response:'The email is already on use',success:false});next();}</code><br>
+<strong>This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.</strong></p>
+<hr>
+<hr>
+<h2>Analysis for file: \src\models\products.js</h2>
+<hr>
+<h2>Analysis for file: \src\models\user.js</h2>
 <hr>
 <h2>Analysis for file: \src\routes\route.js</h2>
 <p>Line 1: <code>app.use(cors())</code><br>
