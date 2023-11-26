@@ -168,6 +168,16 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
             System.out.println("<strong>This may be vulnerable to weak encryption (DES). Consider using stronger encryption algorithms.</strong></p>");
             System.out.println("<hr>");
         }
+
+        Pattern credentialsPattern = Pattern.compile("(let|var|const)\\s*(password|token)\\s*=\\s*(\"[^\"]*\"|'[^']*')");
+        Matcher credentialsMatcher = credentialsPattern.matcher(input);
+
+        if (credentialsMatcher.find()) {
+            int lineNumber = ctx.getStart().getLine();
+            System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
+            System.out.println("<strong>It is a bad practice to declare literal credentials in the source code, as they could be accessed by malicious agents.</strong></p>");
+            System.out.println("<hr>");
+        }
     }
 
     @Override
@@ -182,6 +192,22 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
             int lineNumber = ctx.getStart().getLine();
             System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
             System.out.println("<strong>This may be vulnerable to insecure hash comparison. Use a secure comparison method for cryptographic operations.</strong></p>");
+            System.out.println("<hr>");
+        }
+    }
+
+    @Override
+    public void enterFunctionDeclaration(JavaScriptParser.FunctionDeclarationContext ctx) {
+        String input = ctx.getText();
+        input = escapeHTMLTags(input);
+
+        Pattern sessionPattern = Pattern.compile("function\\s*createSession\\(\\)");
+        Matcher sessionMatcher = sessionPattern.matcher(input);
+
+        if (sessionMatcher.find()) {
+            int lineNumber = ctx.getStart().getLine();
+            System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
+            System.out.println("<strong>Check the security of the session management functions.</strong></p>");
             System.out.println("<hr>");
         }
     }

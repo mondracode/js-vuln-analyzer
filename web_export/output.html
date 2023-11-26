@@ -3,6 +3,23 @@
 </head><body>
 <h1>Node.js vulnerability analyzer</h1>
 <hr>
+<h2>Analysis for file: api_root_3.js</h2>
+<p>Line 1: <code>app.post('/evalEndpoint',(req,res)=&gt;{constuserCode=req.body.code;try{eval(userCode);res.send('Code executed successfully');}catch(error){res.status(500).send('Error executing code');}});</code><br>
+<strong>This may be vulnerable to arbitrary code execution attacks because it uses the eval() function with a string argument, which can execute user input as code.</strong></p>
+<hr>
+<p>Line 1: <code>{constuserCode=req.body.code;try{eval(userCode);res.send('Code executed successfully');}catch(error){res.status(500).send('Error executing code');}}</code><br>
+<strong>This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.</strong></p>
+<hr>
+<p>Line 5: <code>eval(userCode);</code><br>
+<strong>This may be vulnerable to arbitrary code execution attacks because it uses the eval() function with a string argument, which can execute user input as code.</strong></p>
+<hr>
+<p>Line 12: <code>null==undefined</code><br>
+<strong>This input has loose comparisons. These may behave incorrectly because of type coercion and can be used maliciously.</strong></p>
+<hr>
+<p>Line 14: <code>null!=undefined</code><br>
+<strong>This input has loose comparisons. These may behave incorrectly because of type coercion and can be used maliciously.</strong></p>
+<hr>
+<hr>
 <h2>Analysis for file: input.js</h2>
 <p>Line 1: <code>app.use(cors())</code><br>
 <strong>Using CORS protection without an explicit whitelist is discouraged</strong></p>
@@ -44,6 +61,18 @@
 <hr>
 <p>Line 5: <code>userInputHash=="5f4dcc3b5aa765d61d8327deb882cf99"</code><br>
 <strong>This input has loose comparisons. These may behave incorrectly because of type coercion and can be used maliciously.</strong></p>
+<hr>
+<p>Line 9: <code>{constuserProvidedInput=req.query.input;res.send(`&lt;p&gt;${userProvidedInput}&lt;/p&gt;`);}</code><br>
+<strong>This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.</strong></p>
+<hr>
+<p>Line 20: <code>const apiKey="your_api_key_here"</code><br>
+<strong>It is a bad practice to declare literal credentials on source code, since they could be accessed by malicious agents.</strong></p>
+<hr>
+<p>Line 23: <code>{const{username,password}=req.body;if(username==='admin'&&password==='password123'){req.session.user={username:'admin'};res.send('Login successful');}else{res.status(401).send('Invalid credentials');}}</code><br>
+<strong>This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.</strong></p>
+<hr>
+<p>Line 34: <code>{if(req.session.user){res.send('Welcome to the dashboard, '+req.session.user.username);}else{res.status(401).send('Unauthorized. Please log in.');}}</code><br>
+<strong>This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.</strong></p>
 <hr>
 <h1>Package.json Audit Results</h1>
 <hr>
