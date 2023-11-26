@@ -58,6 +58,8 @@ public class Main {
         System.out.println("<hr>");
         System.out.println("<h2>Analysis for file: " + jsFile.getPath().substring(jsFile.getPath().indexOf("input/") + 6) + "</h2>");
 
+        int vulnerabilitiesCount = 0;
+
         try {
             JavaScriptLexer lexer = new JavaScriptLexer(CharStreams.fromFileName(jsFile.getPath()));
             CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -66,8 +68,17 @@ public class Main {
             JavascriptVulnDetector listener = new JavascriptVulnDetector();
             ParseTreeWalker walker = new ParseTreeWalker();
             walker.walk(listener, tree);
+
+            vulnerabilitiesCount = listener.getVulnerabilitiesCount();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        if (vulnerabilitiesCount == 0) {
+            // No vulnerabilities found in this file
+            System.out.println("<p>No security vulnerabilities were detected in this file.</p>");
+            System.out.println("<hr>");
+        }
+
     }
 }

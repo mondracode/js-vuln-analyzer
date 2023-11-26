@@ -20,7 +20,21 @@
 <strong>This input has loose comparisons. These may behave incorrectly because of type coercion and can be used maliciously.</strong></p>
 <hr>
 <hr>
+<h2>Analysis for file: \src\app.js</h2>
+<p>Line 15: <code>app.use(cors())</code><br>
+<strong>Using CORS protection without an explicit whitelist is discouraged</strong></p>
+<hr>
+<p>Line 26: <code>{res.json({response:{autor:app.get('pkg').author,name:app.get('pkg').name,description:app.get('pkg').description,version:app.get('pkg').version,},success:true});}</code><br>
+<strong>This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.</strong></p>
+<hr>
+<hr>
+<h2>Analysis for file: \src\config.js</h2>
+<p>No security vulnerabilities were detected in this file.</p>
+<hr>
+<hr>
 <h2>Analysis for file: \src\constants\common.constants.js</h2>
+<p>No security vulnerabilities were detected in this file.</p>
+<hr>
 <hr>
 <h2>Analysis for file: \src\controllers\auth.controller.js</h2>
 <p>Line 8: <code>{const{username,email,password}=req.body;try{constnewUser=newUser({username,email,password:awaitUser.encryptPassword(password)});constsavedUser=awaitnewUser.save();consttoken=jwt.sign({id:savedUser.id},config.SECRET,{expiresIn:EXPIRE_IN_MINUTES*MINUTE_ON_SECONDS})constnow=newDate();res.json({response:{token,expiresIn:now.valueOf()+(EXPIRE_IN_MINUTES*MINUTE_ON_MILISECONDS)},success:true});}catch(error){res.json({response:"Error creating user ("+error+")",success:false});}}</code><br>
@@ -44,6 +58,10 @@
 <hr>
 <p>Line 12: <code>{try{res.json({response:req.userData,success:true});}catch(error){res.json({response:"Error getting user ("+error+")",success:false});}}</code><br>
 <strong>This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.</strong></p>
+<hr>
+<hr>
+<h2>Analysis for file: \src\database.js</h2>
+<p>No security vulnerabilities were detected in this file.</p>
 <hr>
 <hr>
 <h2>Analysis for file: \src\input.js</h2>
@@ -112,6 +130,8 @@
 <hr>
 <hr>
 <h2>Analysis for file: \src\middlewares\index.js</h2>
+<p>No security vulnerabilities were detected in this file.</p>
+<hr>
 <hr>
 <h2>Analysis for file: \src\middlewares\verifySignup.js</h2>
 <p>Line 3: <code>{const{username}=req.body;constuser=awaitUser.findOne({username});if(user)returnres.json({response:'The user is already on use',success:false});next();}</code><br>
@@ -122,15 +142,23 @@
 <hr>
 <hr>
 <h2>Analysis for file: \src\models\products.js</h2>
+<p>No security vulnerabilities were detected in this file.</p>
+<hr>
 <hr>
 <h2>Analysis for file: \src\models\user.js</h2>
+<p>No security vulnerabilities were detected in this file.</p>
 <hr>
-<h2>Analysis for file: \src\routes\route.js</h2>
-<p>Line 1: <code>app.use(cors())</code><br>
-<strong>Using CORS protection without an explicit whitelist is discouraged</strong></p>
 <hr>
-<p>Line 3: <code>eval(req.attribute)&lt;EOF&gt;</code><br>
-<strong>This may be vulnerable to arbitrary code execution attacks because it uses the eval() function with a string argument, which can execute user input as code.</strong></p>
+<h2>Analysis for file: \src\routes\auth.routes.js</h2>
+<p>No security vulnerabilities were detected in this file.</p>
+<hr>
+<hr>
+<h2>Analysis for file: \src\routes\products.routes.js</h2>
+<p>No security vulnerabilities were detected in this file.</p>
+<hr>
+<hr>
+<h2>Analysis for file: \src\routes\user.routes.js</h2>
+<p>No security vulnerabilities were detected in this file.</p>
 <hr>
 <h1>Package.json Audit Results</h1>
 <hr>

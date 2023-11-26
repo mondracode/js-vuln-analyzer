@@ -7,6 +7,12 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
     Boolean hasPrototypePollution = false;
     Boolean insideEndpoint = false;
 
+    private int vulnerabilitiesCount = 0;
+
+    public int getVulnerabilitiesCount() {
+        return vulnerabilitiesCount;
+    }
+
     private String separateVarKeyword(String exp) {
         return exp.replaceFirst("^(const|var|let)", "$1 ");
     }
@@ -35,10 +41,12 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
             System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
             System.out.println("<strong>This may be vulnerable to arbitrary code execution attacks because it uses the eval() function with a string argument, which can execute user input as code.</strong></p>");
             System.out.println("<hr>");
+            vulnerabilitiesCount++;
         } else if (tmt_matcher.find()) {
             System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
             System.out.println("<strong>This may be vulnerable to arbitrary code execution attacks because it uses the setTimeout() function with a string argument, which can execute user input as code.</strong></p>");
             System.out.println("<hr>");
+            vulnerabilitiesCount++;
         }
 
         if (input.startsWith("app.get")) {
@@ -61,6 +69,7 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
             System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
             System.out.println("<strong>This input has loose comparisons. These may behave incorrectly because of type coercion and can be used maliciously.</strong></p>");
             System.out.println("<hr>");
+            vulnerabilitiesCount++;
         }
     }
 
@@ -81,6 +90,7 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
             System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
             System.out.println("<strong>This input contains prototype pollution. This can interfere with expected behavior of standard functions so not using it is advised</strong></p>");
             System.out.println("<hr>");
+            vulnerabilitiesCount++;
         }
     }
 
@@ -97,6 +107,7 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
             System.out.println("<p>Line " + lineNumber + ": <code>" + matcher.group(0) + "</code><br>");
             System.out.println("<strong>This is a weak random number generation. It is highly discouraged to use Math.random() for any critical purpose</strong></p>");
             System.out.println("<hr>");
+            vulnerabilitiesCount++;
         }
 
         pattern = Pattern.compile(exposedCredentialsRegex);
@@ -107,6 +118,7 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
             System.out.println("<p>Line " + lineNumber + ": <code>" + matcher.group(0) + "</code><br>");
             System.out.println("<strong>It is a bad practice to declare literal credentials on source code, since they could be accessed by malicious agents.</strong></p>");
             System.out.println("<hr>");
+            vulnerabilitiesCount++;
         }
     }
 
@@ -120,6 +132,7 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
             System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
             System.out.println("<strong>Using CORS protection without an explicit whitelist is discouraged</strong></p>");
             System.out.println("<hr>");
+            vulnerabilitiesCount++;
         }
     }
 
@@ -136,6 +149,7 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
             System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
             System.out.println("<strong>This may be vulnerable to XSS attacks because it includes user input directly in the HTML response without sanitization.</strong></p>");
             System.out.println("<hr>");
+            vulnerabilitiesCount++;
         }
     }
 
@@ -150,6 +164,7 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
                 System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
                 System.out.println("<strong>This may be vulnerable to DDoS attacks because it includes a 'while (true)' loop inside an endpoint definition without any break condition.</strong></p>");
                 System.out.println("<hr>");
+                vulnerabilitiesCount++;
             }
         }
     }
@@ -167,6 +182,7 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
             System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
             System.out.println("<strong>This may be vulnerable to weak encryption (DES). Consider using stronger encryption algorithms.</strong></p>");
             System.out.println("<hr>");
+            vulnerabilitiesCount++;
         }
 
         Pattern credentialsPattern = Pattern.compile("(let|var|const)\\s*(password|token)\\s*=\\s*(\"[^\"]*\"|'[^']*')");
@@ -177,6 +193,7 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
             System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
             System.out.println("<strong>It is a bad practice to declare literal credentials in the source code, as they could be accessed by malicious agents.</strong></p>");
             System.out.println("<hr>");
+            vulnerabilitiesCount++;
         }
     }
 
@@ -193,6 +210,7 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
             System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
             System.out.println("<strong>This may be vulnerable to insecure hash comparison. Use a secure comparison method for cryptographic operations.</strong></p>");
             System.out.println("<hr>");
+            vulnerabilitiesCount++;
         }
     }
 
@@ -209,6 +227,7 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
             System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
             System.out.println("<strong>Check the security of the session management functions.</strong></p>");
             System.out.println("<hr>");
+            vulnerabilitiesCount++;
         }
     }
 }
