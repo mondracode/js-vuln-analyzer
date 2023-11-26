@@ -22,29 +22,7 @@ public class Main {
         System.out.println("<h1>Node.js vulnerability analyzer</h1>");
 
         File srcFolder = new File("input/src");
-        File[] jsFiles = srcFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".js"));
-
-        if (jsFiles != null) {
-            for (File jsFile : jsFiles) {
-                System.out.println("<hr>");
-                System.out.println("<h2>Analysis for file: " + jsFile.getName() + "</h2>");
-
-                JavaScriptLexer lexer = new JavaScriptLexer(CharStreams.fromFileName(jsFile.getPath()));
- 
-                CommonTokenStream tokens = new CommonTokenStream(lexer);
-
-                JavaScriptParser parser = new JavaScriptParser(tokens);
-
-                ParseTree tree = parser.program();
-
-                JavascriptVulnDetector listener = new JavascriptVulnDetector();
-
-                ParseTreeWalker walker = new ParseTreeWalker();
-                walker.walk(listener, tree);
-            }
-        } else {
-            System.out.println("No JavaScript files found in the 'input/src' folder.");
-        }
+        processFiles(srcFolder);
 
         try {
             AuditService.main(args);
@@ -59,5 +37,37 @@ public class Main {
         System.setOut(console);
 
         Desktop.getDesktop().browse(htmlFile.toURI());
+    }
+
+    private static void processFiles(File folder) {
+        File[] files = folder.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    // If it's a directory, process its files
+                    processFiles(file);
+                } else if (file.getName().toLowerCase().endsWith(".js")) {
+                    // If it's a JavaScript file, perform analysis
+                    processJsFile(file);
+                }
+            }
+        }
+    }
+
+    private static void processJsFile(File jsFile) {
+        System.out.println("<hr>");
+        System.out.println("<h2>Analysis for file: " + jsFile.getPath() + "</h2>");
+
+        try {
+            JavaScriptLexer lexer = new JavaScriptLexer(CharStreams.fromFileName(jsFile.getPath()));
+            CommonTokenStream tokens = new CommonTokenStream(lexer);
+            JavaScriptParser parser = new JavaScriptParser(tokens);
+            ParseTree tree = parser.program();
+            JavascriptVulnDetector listener = new JavascriptVulnDetector();
+            ParseTreeWalker walker = new ParseTreeWalker();
+            walker.walk(listener, tree);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
