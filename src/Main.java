@@ -29,12 +29,8 @@ public class Main {
                 System.out.println("<hr>");
                 System.out.println("<h2>Analysis for file: " + jsFile.getName() + "</h2>");
 
-                JavaScriptLexer lexer;
-                if (args.length == 0)
-                    lexer = new JavaScriptLexer(CharStreams.fromFileName(jsFile.getPath()));
-                else
-                    lexer = new JavaScriptLexer(CharStreams.fromFileName(args[0]));
-
+                JavaScriptLexer lexer = new JavaScriptLexer(CharStreams.fromFileName(jsFile.getPath()));
+ 
                 CommonTokenStream tokens = new CommonTokenStream(lexer);
 
                 JavaScriptParser parser = new JavaScriptParser(tokens);
