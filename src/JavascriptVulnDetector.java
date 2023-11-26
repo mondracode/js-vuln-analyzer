@@ -153,4 +153,36 @@ public class JavascriptVulnDetector extends JavaScriptParserBaseListener {
             }
         }
     }
+
+    @Override
+    public void enterVariableDeclaration(JavaScriptParser.VariableDeclarationContext ctx) {
+        String input = ctx.getText();
+        input = escapeHTMLTags(input);
+
+        Pattern weakCipherPattern = Pattern.compile("\\bCryptoJS\\.DES\\.encrypt\\([^)]*\\)");
+        Matcher weakCipherMatcher = weakCipherPattern.matcher(input);
+
+        if (weakCipherMatcher.find()) {
+            int lineNumber = ctx.getStart().getLine();
+            System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
+            System.out.println("<strong>This may be vulnerable to weak encryption (DES). Consider using stronger encryption algorithms.</strong></p>");
+            System.out.println("<hr>");
+        }
+    }
+
+    @Override
+    public void enterIfStatement(JavaScriptParser.IfStatementContext ctx) {
+        String input = ctx.getText();
+        input = escapeHTMLTags(input);
+
+        Pattern insecureComparisonPattern = Pattern.compile("\\b(md5|sha1|sha256|etc)\\([^)]*\\)\\s*(==|!=)\\s*\"[^\"]*\"");
+        Matcher insecureComparisonMatcher = insecureComparisonPattern.matcher(input);
+
+        if (insecureComparisonMatcher.find()) {
+            int lineNumber = ctx.getStart().getLine();
+            System.out.println("<p>Line " + lineNumber + ": <code>" + input + "</code><br>");
+            System.out.println("<strong>This may be vulnerable to insecure hash comparison. Use a secure comparison method for cryptographic operations.</strong></p>");
+            System.out.println("<hr>");
+        }
+    }
 }

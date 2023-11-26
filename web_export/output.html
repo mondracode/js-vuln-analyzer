@@ -36,21 +36,65 @@
 <p>Line 37: <code>setTimeout(user_input,1000);</code><br>
 <strong>This may be vulnerable to arbitrary code execution attacks because it uses the setTimeout() function with a string argument, which can execute user input as code.</strong></p>
 <hr>
+<p>Line 39: <code>encryptedData=CryptoJS.DES.encrypt("data","key")</code><br>
+<strong>This may be vulnerable to weak encryption (DES). Consider using stronger encryption algorithms.</strong></p>
+<hr>
+<p>Line 43: <code>userInputHash=="5f4dcc3b5aa765d61d8327deb882cf99"</code><br>
+<strong>This input has loose comparisons. These may behave incorrectly because of type coercion and can be used maliciously.</strong></p>
+<hr>
 <h1>Security Audit Results</h1>
 <hr>
 <div class='container'><h3>Vulnerabilities</h3>
 <ul>
 <li>Info: 0</li>
-<li>Low: 0</li>
+<li>Low: 1</li>
 <li>Moderate: 0</li>
-<li>High: 0</li>
+<li>High: 2</li>
 <li>Critical: 0</li>
 </ul></div>
 <hr>
 <div class='container'><h3>Advisories</h3>
 <ul>
+<li>
+<strong>Regular Expression Denial of Service in marked</strong>
+<ul>
+<li>Severity: low</li>
+<li>Vulnerable Versions: >=0.4.0 <0.7.0</li>
+<li>Recommendation: Upgrade to version 0.7.0 or later</li>
+</ul>
+</li>
+<li>
+<strong>Inefficient Regular Expression Complexity in marked</strong>
+<ul>
+<li>Severity: high</li>
+<li>Vulnerable Versions: <4.0.10</li>
+<li>Recommendation: Upgrade to version 4.0.10 or later</li>
+</ul>
+</li>
+<li>
+<strong>Inefficient Regular Expression Complexity in marked</strong>
+<ul>
+<li>Severity: high</li>
+<li>Vulnerable Versions: <4.0.10</li>
+<li>Recommendation: Upgrade to version 4.0.10 or later</li>
+</ul>
+</li>
 </ul></div>
 <hr>
 <div class='container'><h3>Actions</h3>
 <ul>
+<li>
+<strong>marked</strong>
+<ul>
+<li>Action: install</li>
+<li>Module: marked</li>
+<li>Target: 10.0.0</li>
+<li>Resolves:
+<ul>
+<li>marked</li>
+<li>marked</li>
+<li>marked</li>
+</ul></li>
+</ul></div>
+<hr>
 </body></html>
