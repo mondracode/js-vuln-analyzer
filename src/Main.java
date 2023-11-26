@@ -3,8 +3,6 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
-import java.io.IOException;
-
 import java.io.*;
 import java.awt.Desktop;
 
@@ -22,24 +20,35 @@ public class Main {
         System.out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\">");
         System.out.println("</head><body>");
         System.out.println("<h1>Node.js vulnerability analyzer</h1>");
-        System.out.println("<hr>");
 
-        JavaScriptLexer lexer;
-        if (args.length == 0)
-            lexer = new JavaScriptLexer(CharStreams.fromFileName("input/test_case.txt"));
-        else
-            lexer = new JavaScriptLexer(CharStreams.fromFileName(args[0]));
+        File srcFolder = new File("input/src");
+        File[] jsFiles = srcFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".js"));
 
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        if (jsFiles != null) {
+            for (File jsFile : jsFiles) {
+                System.out.println("<hr>");
+                System.out.println("<h2>Analysis for file: " + jsFile.getName() + "</h2>");
 
-        JavaScriptParser parser = new JavaScriptParser(tokens);
+                JavaScriptLexer lexer;
+                if (args.length == 0)
+                    lexer = new JavaScriptLexer(CharStreams.fromFileName(jsFile.getPath()));
+                else
+                    lexer = new JavaScriptLexer(CharStreams.fromFileName(args[0]));
 
-        ParseTree tree = parser.program();
+                CommonTokenStream tokens = new CommonTokenStream(lexer);
 
-        JavascriptVulnDetector listener = new JavascriptVulnDetector();
+                JavaScriptParser parser = new JavaScriptParser(tokens);
 
-        ParseTreeWalker walker = new ParseTreeWalker();
-        walker.walk(listener, tree);
+                ParseTree tree = parser.program();
+
+                JavascriptVulnDetector listener = new JavascriptVulnDetector();
+
+                ParseTreeWalker walker = new ParseTreeWalker();
+                walker.walk(listener, tree);
+            }
+        } else {
+            System.out.println("No JavaScript files found in the 'input/src' folder.");
+        }
 
         try {
             AuditService.main(args);
