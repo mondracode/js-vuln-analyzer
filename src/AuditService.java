@@ -15,7 +15,7 @@ import com.google.gson.JsonObject;
 public class AuditService {
     public static void main(String[] args) {
         try {
-            String packageJsonPath = "./input/package.json";
+            String packageJsonPath = "./input/package-lock.json";
             String packageJsonContent = readFile(packageJsonPath);
 
             String requestBody = packageJsonContent;

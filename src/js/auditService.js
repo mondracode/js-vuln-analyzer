@@ -1,7 +1,7 @@
 const fs = require('fs');
 const fetch = require('node-fetch');
 
-const packageJsonPath = './input/package.json';
+const packageJsonPath = './input/package-lock.json';
 const packageJsonContent = fs.readFileSync(packageJsonPath, 'utf8');
 const packageJson = JSON.parse(packageJsonContent);
 

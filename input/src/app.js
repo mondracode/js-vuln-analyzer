@@ -9,7 +9,7 @@ import authRoutes from './routes/auth.routes';
 import usersRouters from './routes/user.routes';
 
 import { createUsers } from './libs/initialUsers';
-import pkg from '../package.json';
+import pkg from '../package-lock.json';
 
 const app = express();
 app.use(cors());
